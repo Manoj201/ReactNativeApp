@@ -75,8 +75,15 @@ import com.android.build.OutputFile
 project.ext.react = [
     entryFile: "index.js"
 ]
+project.ext.envConfigFiles = [
+        debug  : "config/.env/dev",
+        qa     : "config/.env/qa",
+        staging: "config/.env/stag",
+        release: "config/.env/prod",
+]
 
 apply from: "../../node_modules/react-native/react.gradle"
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 
 /**
  * Set this to true to create two separate APKs instead of one:
@@ -91,7 +98,7 @@ def enableSeparateBuildPerCPUArchitecture = false
 /**
  * Run Proguard to shrink the Java bytecode in release builds.
  */
-def enableProguardInReleaseBuilds = false
+def enableProguardInReleaseBuilds = true
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -115,11 +122,50 @@ android {
             include "armeabi-v7a", "x86"
         }
     }
+    signingConfigs {
+        qa {
+            if (project.hasProperty('REACTNATIVE_BETA_STORE_FILE')) {
+                storeFile file(REACTNATIVE_BETA_STORE_FILE)
+                storePassword REACTNATIVE_BETA_STORE_PASSWORD
+                keyAlias REACTNATIVE_BETA_KEY_ALIAS
+                keyPassword REACTNATIVE_BETA_KEY_PASSWORD
+            }
+        }
+        staging {
+            if (project.hasProperty('REACTNATIVE_BETA_STORE_FILE')) {
+                storeFile file(REACTNATIVE_BETA_STORE_FILE)
+                storePassword REACTNATIVE_BETA_STORE_PASSWORD
+                keyAlias REACTNATIVE_BETA_KEY_ALIAS
+                keyPassword REACTNATIVE_BETA_KEY_PASSWORD
+            }
+        }
+        release {
+            if (project.hasProperty('REACTNATIVE_BETA_STORE_FILE')) {
+                storeFile file(REACTNATIVE_BETA_STORE_FILE)
+                storePassword REACTNATIVE_BETA_STORE_PASSWORD
+                keyAlias REACTNATIVE_BETA_KEY_ALIAS
+                keyPassword REACTNATIVE_BETA_KEY_PASSWORD
+            }
+        }
+    }
     buildTypes {
+        debug {}
+        qa {
+            minifyEnabled enableProguardInReleaseBuilds
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.qa
+        }
+        staging {
+            minifyEnabled enableProguardInReleaseBuilds
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.staging
+        }
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release
         }
+
     }
     // applicationVariants are e.g. debug, release
     applicationVariants.all { variant ->

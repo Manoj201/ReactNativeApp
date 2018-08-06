@@ -10,7 +10,13 @@
     "ios": "react-native run-ios --scheme 'ReactNativeApp - Dev'",
     "ios:qa": "react-native run-ios --scheme 'ReactNativeApp - QA'",
     "ios:stag": "react-native run-ios --scheme 'ReactNativeApp - Stag'",
-    "ios:prod": "react-native run-ios --scheme 'ReactNativeApp - Prod'"
+    "ios:prod": "react-native run-ios --scheme 'ReactNativeApp - Prod'",
+    "android": "react-native run-android",
+    "android:dev": "npm run android",
+    "android:qa": "npm run android:bundle && react-native run-android --variant=qa",
+    "android:stag": "npm run android:bundle && react-native run-android --variant=staging",
+    "android:prod": "npm run android:bundle && react-native run-android --variant=release",
+    "android:bundle": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res"
   },
   "dependencies": {
     "react": "16.4.1",
