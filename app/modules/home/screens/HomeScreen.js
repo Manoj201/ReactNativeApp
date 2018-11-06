@@ -1,16 +1,17 @@
 // @flow
 import React from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
+import {connect} from 'react-redux';
 
+import homeActions from '../actions/HomeActions';
 import rootStackNavActions from '../../../navigations/primaryStackNavigator/PrimaryStackNavigation.action';
 
 import styles from './HomeScreen.styles';
-import TabOne from "../../../navigations/primaryTabNavigator/TabOne";
-import TabTwo from "../../../navigations/primaryTabNavigator/TabTwo";
 
 class HomeScreen extends React.PureComponent<any, any> {
   constructor(props) {
     super(props);
+    props.dispatch( homeActions.getUserById(10));
   }
 
   handlePress= (): void => {
@@ -28,5 +29,13 @@ class HomeScreen extends React.PureComponent<any, any> {
   }
 }
 
-export default HomeScreen;
+HomeScreen.prototypes = {};
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+
+  };
+};
+
+export default connect(mapStateToProps)(HomeScreen);
 

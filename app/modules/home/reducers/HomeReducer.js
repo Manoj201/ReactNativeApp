@@ -19,9 +19,9 @@ export const getUserById = (state = INITIAL_STATE, {payload}) => ({
   isLoading: true,
 });
 
-export const getUserByIdSucces = (state = INITIAL_STATE, {payload}) => ({
+export const getUserByIdSuccess = (state = INITIAL_STATE, {payload}) => ({
   ...state,
-  user: payload.data,
+  user: payload.data.response,
   isLoading: false,
 });
 
@@ -33,7 +33,7 @@ export const getUserByIdFailure = (state = INITIAL_STATE, {payload}) => ({
 
 const ACTION_HANDLERS = {
   [GET_USER_BY_ID]: getUserById,
-  [GET_USER_BY_ID_SUCCESS]: getUserByIdSucces,
+  [GET_USER_BY_ID_SUCCESS]: getUserByIdSuccess,
   [GET_USER_BY_ID_FAILURE]: getUserByIdFailure,
 };
 
